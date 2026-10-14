@@ -1,0 +1,21 @@
+{
+  "name": "Damselette",
+  "tagline": "A moonlit guardian for your Discord server.",
+  "description": "Official documentation for Damselette, a Discord bot for moderation, support tickets and server protection.",
+  "url": "https://sshcomet.github.io/damselette/",
+  "author": "sshcomet",
+  "images": {
+    "avatar": "assets/img/avatar.svg",
+    "banner": "assets/img/banner.svg",
+    "background": "assets/img/background.svg",
+    "backgroundLight": "assets/img/background-light.svg"
+  },
+  "links": {
+    "github": "https://github.com/sshcomet/damselette",
+    "author": "https://github.com/sshcomet",
+    "invite": "",
+    "support": ""
+  },
+  "editBase": "",
+  "footer": "Made by @sshcomet."
+}

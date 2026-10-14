@@ -1,0 +1,178 @@
+{
+  "id": "admin",
+  "title": "Server Admin",
+  "icon": "settings",
+  "description": "Configure Damselette for your server and switch on protection against raids and mass destruction.",
+  "guide": "antinuke",
+  "commands": [
+    {
+      "name": "config",
+      "summary": "Choose where moderation cases are logged and review your settings.",
+      "description": "Holds Damselette's general server settings. Set a mod-log channel so every case is posted in one place, and view all current settings at a glance, including those from the ticket system.",
+      "usage": ["/config modlog channel:<channel>", "/config view"],
+      "permissions": { "user": ["Manage Server"], "bot": ["Send Messages", "Embed Links"] },
+      "subcommands": [
+        {
+          "name": "modlog",
+          "summary": "Set the moderation log channel.",
+          "description": "Every moderation case is posted as an embed in this channel, showing the case number, user, moderator, reason and any duration.",
+          "usage": ["/config modlog channel:<channel>"],
+          "options": [
+            { "name": "channel", "type": "Channel", "required": true, "description": "The text channel that will receive the mod log." }
+          ],
+          "examples": [{ "command": "/config modlog channel:#mod-log" }]
+        },
+        {
+          "name": "view",
+          "summary": "Show the current settings.",
+          "description": "Displays the mod-log channel, ticket panel channel, ticket category, support role, ticket log channel and the maximum open tickets per member.",
+          "usage": ["/config view"],
+          "examples": [{ "command": "/config view" }],
+          "notes": ["Only you can see the reply."]
+        }
+      ]
+    },
+    {
+      "name": "antinuke",
+      "summary": "Protect the server from raids, nukes and rogue staff.",
+      "description": "Manages Damselette's anti-nuke protection. When someone who is not trusted breaks the limits, Damselette undoes the damage, can quarantine their power roles and asks your administrators to decide the punishment. Anyone with Administrator can view the status, but only the **server owner** can change settings, so a hijacked admin account can't switch protection off.",
+      "usage": [
+        "/antinuke status",
+        "/antinuke enable",
+        "/antinuke disable",
+        "/antinuke punishment type:<ban|kick|strip>",
+        "/antinuke logchannel channel:<channel>",
+        "/antinuke limit action:<action> max:<number> [seconds]",
+        "/antinuke quarantine enabled:<true|false>",
+        "/antinuke relax user:<member> duration:<time|off>",
+        "/antinuke staffrole add|remove|list",
+        "/antinuke whitelist add|remove|list"
+      ],
+      "permissions": { "user": ["Administrator"], "bot": ["View Audit Log", "Ban Members", "Kick Members", "Manage Roles", "Manage Channels", "Manage Webhooks", "Manage Server", "Manage Expressions"] },
+      "access": "Administrators can view `status` and the lists. Every other subcommand is for the **server owner** only.",
+      "subcommands": [
+        {
+          "name": "status",
+          "summary": "Show settings and check Damselette's permissions.",
+          "description": "Displays whether protection is on, the punishment, the alert channel, trusted users, staff roles, quarantine state and every limit. It also checks Damselette's own permissions and role position and lists anything that needs fixing.",
+          "usage": ["/antinuke status"],
+          "permissions": { "user": ["Administrator"], "bot": [] },
+          "examples": [{ "command": "/antinuke status" }],
+          "notes": ["Run this after setup. A green check means everything is in order.", "Only you can see the reply."]
+        },
+        {
+          "name": "enable",
+          "summary": "Turn anti-nuke protection on.",
+          "description": "Switches protection on. It is enabled by default on every server.",
+          "usage": ["/antinuke enable"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "examples": [{ "command": "/antinuke enable" }]
+        },
+        {
+          "name": "disable",
+          "summary": "Turn anti-nuke protection off.",
+          "description": "Switches protection off. The server is no longer watched until you enable it again.",
+          "usage": ["/antinuke disable"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "examples": [{ "command": "/antinuke disable" }]
+        },
+        {
+          "name": "punishment",
+          "summary": "Choose what happens when an admin approves a breach.",
+          "description": "Sets the action taken against an offender **after an administrator approves** the request. Damselette never applies it on its own.",
+          "usage": ["/antinuke punishment type:<ban|kick|strip>"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "options": [
+            { "name": "type", "type": "Choice", "required": true, "description": "`Ban`, `Kick` or `Strip all roles`." }
+          ],
+          "examples": [{ "command": "/antinuke punishment type:strip" }]
+        },
+        {
+          "name": "logchannel",
+          "summary": "Choose where anti-nuke alerts are posted.",
+          "description": "Approval requests and rollback reports are posted in this channel. Pick one your administrators watch closely. If none is set, Damselette falls back to your mod-log channel or system channel.",
+          "usage": ["/antinuke logchannel channel:<channel>"],
+          "permissions": { "user": ["Server owner"], "bot": ["Send Messages", "Embed Links"] },
+          "options": [
+            { "name": "channel", "type": "Channel", "required": true, "description": "A text channel for alerts." }
+          ],
+          "examples": [{ "command": "/antinuke logchannel channel:#security-alerts" }]
+        },
+        {
+          "name": "limit",
+          "summary": "Adjust how much of an action is allowed.",
+          "description": "Changes how many times a non-trusted user may perform a protected action inside a time window before it counts as a breach. Setting the maximum to `0` makes the action never allowed.",
+          "usage": ["/antinuke limit action:<action> max:<number> [seconds]"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "options": [
+            { "name": "action", "type": "Choice", "required": true, "description": "The protected action to change, such as Channel deletes or Member bans." },
+            { "name": "max", "type": "Number", "required": true, "description": "How many are allowed inside the window, from 0 to 50. `0` means never allowed." },
+            { "name": "seconds", "type": "Number", "required": false, "description": "The window length in seconds, from 5 to 600. Keeps the current window if omitted." }
+          ],
+          "examples": [{ "command": "/antinuke limit action:Member bans max:3 seconds:30", "note": "Allow three bans in any 30 second window." }],
+          "notes": ["See the [Anti-nuke guide](#/docs/antinuke) for every protected action and its default."]
+        },
+        {
+          "name": "quarantine",
+          "summary": "Toggle instant removal of power roles on a breach.",
+          "description": "When on, the moment a breach is detected the offender temporarily loses only the roles that carry powerful permissions. They are not banned. If an admin dismisses the request, or it expires, the roles are returned.",
+          "usage": ["/antinuke quarantine enabled:<true|false>"],
+          "permissions": { "user": ["Server owner"], "bot": ["Manage Roles"] },
+          "options": [
+            { "name": "enabled", "type": "True/False", "required": true, "description": "`true` to quarantine offenders, `false` to only roll back and ask admins." }
+          ],
+          "examples": [{ "command": "/antinuke quarantine enabled:true" }],
+          "notes": ["On by default."]
+        },
+        {
+          "name": "relax",
+          "summary": "Give one person higher limits for a short time.",
+          "description": "Triples a person's limits for a limited period, handy when they are doing a big cleanup or responding to a raid. Use `off` to cancel early.",
+          "usage": ["/antinuke relax user:<member> duration:<time|off>"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "options": [
+            { "name": "user", "type": "Member", "required": true, "description": "The person to relax limits for." },
+            { "name": "duration", "type": "Duration", "required": true, "description": "How long, such as `30m` or `2h` (maximum 24 hours), or `off` to cancel." }
+          ],
+          "examples": [
+            { "command": "/antinuke relax user:@Mod duration:2h", "note": "Three times the limits for two hours." },
+            { "command": "/antinuke relax user:@Mod duration:off" }
+          ]
+        },
+        {
+          "name": "staffrole",
+          "summary": "Manage roles that receive higher limits.",
+          "description": "Members of a staff role get double limits so everyday moderation never trips protection. They are still watched, and actions that are never allowed stay never allowed. Staff slack only applies after a member has been in the server for seven days.",
+          "usage": ["/antinuke staffrole add role:<role>", "/antinuke staffrole remove role:<role>", "/antinuke staffrole list"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "options": [
+            { "name": "role", "type": "Role", "required": true, "description": "The staff role (for `add` and `remove`)." }
+          ],
+          "examples": [
+            { "command": "/antinuke staffrole add role:@Moderator" },
+            { "command": "/antinuke staffrole list", "note": "Administrators can also run the list view." }
+          ]
+        },
+        {
+          "name": "whitelist",
+          "summary": "Manage users and bots that anti-nuke always trusts.",
+          "description": "Trusted users and bots are ignored by protection. Whitelisting a bot also lets it be added to the server. The server owner is always trusted.",
+          "usage": ["/antinuke whitelist add user:<user>", "/antinuke whitelist remove user:<user>", "/antinuke whitelist list"],
+          "permissions": { "user": ["Server owner"], "bot": [] },
+          "options": [
+            { "name": "user", "type": "User", "required": true, "description": "The user or bot to trust or stop trusting (for `add` and `remove`)." }
+          ],
+          "examples": [
+            { "command": "/antinuke whitelist add user:@TrustedBot" },
+            { "command": "/antinuke whitelist list", "note": "Administrators can also run the list view." }
+          ],
+          "notes": ["Only whitelist accounts you fully trust, because protection will not act on them."]
+        }
+      ],
+      "notes": [
+        "For rollback and approved punishments to work, drag Damselette's role to the **very top** of your role list.",
+        "Read the [Anti-nuke guide](#/docs/antinuke) to understand how detection, approval and rollback work."
+      ]
+    }
+  ]
+}

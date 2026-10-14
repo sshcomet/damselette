@@ -1,0 +1,17 @@
+{
+  "guides": [
+    "guides/introduction.md",
+    "guides/getting-started.md",
+    "guides/moderation.md",
+    "guides/tickets.md",
+    "guides/antinuke.md",
+    "guides/permissions.md",
+    "guides/faq.md"
+  ],
+  "commandCategories": [
+    "commands/moderation.json",
+    "commands/tickets.json",
+    "commands/admin.json",
+    "commands/utility.json"
+  ]
+}

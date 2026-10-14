@@ -1,0 +1,107 @@
+{
+  "id": "tickets",
+  "title": "Tickets",
+  "icon": "ticket",
+  "description": "A private support desk inside your server. Members open a ticket with one click, staff claim and resolve it, and a full transcript is delivered when it closes.",
+  "guide": "tickets",
+  "commands": [
+    {
+      "name": "ticket",
+      "summary": "Set up and manage your server's support tickets.",
+      "description": "The `/ticket` command configures the ticket system and gives staff tools to review and manage tickets. Members never need a command: they open tickets with the **Open Ticket** button on the panel that `/ticket setup` posts.",
+      "usage": [
+        "/ticket setup panel_channel:<channel> category:<category> support_role:<role> [log_channel] [max_open]",
+        "/ticket list [status]",
+        "/ticket view number:<ticket>",
+        "/ticket close [reason]",
+        "/ticket add user:<member>",
+        "/ticket remove user:<member>"
+      ],
+      "permissions": { "user": [], "bot": ["Manage Channels"] },
+      "access": "Varies: `setup` needs Manage Server, the others need ticket staff access.",
+      "subcommands": [
+        {
+          "name": "setup",
+          "summary": "Configure tickets and post the Open Ticket panel.",
+          "description": "Posts the support panel in the channel you choose and saves where ticket channels are created, who can handle them and where transcripts go. Run it again at any time to move the panel or change settings.",
+          "usage": ["/ticket setup panel_channel:<channel> category:<category> support_role:<role> [log_channel] [max_open]"],
+          "permissions": { "user": ["Manage Server"], "bot": ["Send Messages", "Embed Links", "Manage Channels"] },
+          "options": [
+            { "name": "panel_channel", "type": "Channel", "required": true, "description": "The text channel where the Open Ticket panel is posted." },
+            { "name": "category", "type": "Category", "required": true, "description": "The category in which new ticket channels are created." },
+            { "name": "support_role", "type": "Role", "required": true, "description": "The role that can see and resolve tickets. It is mentioned when a ticket opens." },
+            { "name": "log_channel", "type": "Channel", "required": false, "description": "Where ticket events and transcripts are sent. Keeps the existing log channel if you leave it out." },
+            { "name": "max_open", "type": "Number", "required": false, "description": "How many tickets one member may have open at once, from 1 to 10. Defaults to 1." }
+          ],
+          "examples": [
+            { "command": "/ticket setup panel_channel:#support category:Tickets support_role:@Support log_channel:#ticket-logs max_open:2" }
+          ],
+          "notes": ["Damselette must be able to send messages in the panel channel and manage channels in the category."]
+        },
+        {
+          "name": "list",
+          "summary": "List tickets by status.",
+          "description": "Shows the most recent tickets with their number, status, owner and subject. Open tickets link directly to their channel.",
+          "usage": ["/ticket list [status]"],
+          "permissions": { "user": ["Ticket staff"], "bot": [] },
+          "options": [
+            { "name": "status", "type": "Choice", "required": false, "description": "Filter by `open`, `resolved`, `closed` or `all`. Defaults to `open`." }
+          ],
+          "examples": [{ "command": "/ticket list status:all" }],
+          "notes": ["Only you can see the reply.", "Up to the 25 most recent matching tickets are shown."]
+        },
+        {
+          "name": "view",
+          "summary": "View the details of one ticket.",
+          "description": "Displays a ticket's subject, description, owner, who claimed it, when it was opened and, if finished, how it was resolved.",
+          "usage": ["/ticket view number:<ticket>"],
+          "permissions": { "user": ["Ticket staff"], "bot": [] },
+          "options": [
+            { "name": "number", "type": "Number", "required": true, "description": "The ticket number, for example `12` for ticket #0012." }
+          ],
+          "examples": [{ "command": "/ticket view number:12" }],
+          "notes": ["Only you can see the reply."]
+        },
+        {
+          "name": "close",
+          "summary": "Resolve and close the ticket you are in.",
+          "description": "Marks the current ticket as resolved, sends the transcript to the log channel and to the ticket owner, then deletes the channel after five seconds. It does the same as the **Resolve & Close** button.",
+          "usage": ["/ticket close [reason]"],
+          "permissions": { "user": ["Ticket staff"], "bot": ["Manage Channels"] },
+          "options": [
+            { "name": "reason", "type": "Text", "required": false, "description": "Resolution notes shared with the member and saved in the log (up to 1000 characters)." }
+          ],
+          "examples": [{ "command": "/ticket close reason:Role issue fixed, enjoy the server!" }],
+          "notes": ["Run it inside an open ticket channel."]
+        },
+        {
+          "name": "add",
+          "summary": "Add another member to the current ticket.",
+          "description": "Gives a member access to the ticket channel so they can read and reply, for example a senior moderator or a second person involved in the issue.",
+          "usage": ["/ticket add user:<member>"],
+          "permissions": { "user": ["Ticket staff"], "bot": ["Manage Channels"] },
+          "options": [
+            { "name": "user", "type": "Member", "required": true, "description": "The member to give access to." }
+          ],
+          "examples": [{ "command": "/ticket add user:@Aria" }],
+          "notes": ["Run it inside an open ticket channel."]
+        },
+        {
+          "name": "remove",
+          "summary": "Remove a member from the current ticket.",
+          "description": "Takes away a member's access to the ticket channel. The person who opened the ticket cannot be removed.",
+          "usage": ["/ticket remove user:<member>"],
+          "permissions": { "user": ["Ticket staff"], "bot": ["Manage Channels"] },
+          "options": [
+            { "name": "user", "type": "Member", "required": true, "description": "The member to remove." }
+          ],
+          "examples": [{ "command": "/ticket remove user:@Aria" }],
+          "notes": ["Run it inside an open ticket channel."]
+        }
+      ],
+      "notes": [
+        "**Ticket staff** means anyone with Administrator, anyone with Manage Server, or anyone holding the support role chosen in `/ticket setup`."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,299 @@
+{
+  "id": "moderation",
+  "title": "Moderation",
+  "icon": "shield",
+  "description": "Keep your community safe with a complete toolkit for warnings, timeouts, bans, channel control and member management. Every action respects role hierarchy and is written to your mod log as a numbered case.",
+  "guide": "moderation",
+  "commands": [
+    {
+      "name": "warn",
+      "summary": "Issue a formal warning to a member.",
+      "description": "Records a warning against a member, notifies them by direct message and logs it as a case. Warnings build a member's record, so you can review it later with `/warnings` or `/history`.",
+      "usage": ["/warn user:<member> reason:<text>"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to warn. They must be in the server." },
+        { "name": "reason", "type": "Text", "required": true, "description": "Why the member is being warned (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": [] },
+      "logged": true,
+      "notifiesUser": true,
+      "examples": [
+        { "command": "/warn user:@Aria reason:Spamming invite links in #general", "note": "Aria receives a DM and the warning is saved as a case." }
+      ],
+      "notes": [
+        "The reply tells you the case number and how many active warnings the member now has.",
+        "You can only warn members whose highest role is below yours and below Damselette's."
+      ]
+    },
+    {
+      "name": "warnings",
+      "summary": "Show a member's active warnings.",
+      "description": "Lists the active warnings for a member, newest last, including the date, the moderator who issued each one and the reason. Warnings that were removed with `/delwarn` or `/clearwarnings` are not shown here; use `/history` to see everything.",
+      "usage": ["/warnings user:<member>"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member whose warnings you want to see." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": [] },
+      "private": true,
+      "examples": [{ "command": "/warnings user:@Aria" }],
+      "notes": ["Only you can see the reply.", "The most recent 15 warnings are displayed."]
+    },
+    {
+      "name": "delwarn",
+      "summary": "Remove a single warning by its case number.",
+      "description": "Marks one warning as removed. The case stays in the member's `/history` (flagged as removed) so there is always an audit trail, but it no longer counts as an active warning.",
+      "usage": ["/delwarn case:<number>"],
+      "options": [
+        { "name": "case", "type": "Number", "required": true, "description": "The case number of the warning, shown when it was issued and in the mod log." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": [] },
+      "examples": [{ "command": "/delwarn case:42" }],
+      "notes": ["Only warnings can be removed this way. Other case types, such as bans, are permanent records."]
+    },
+    {
+      "name": "clearwarnings",
+      "summary": "Remove every active warning from a member.",
+      "description": "Clears all of a member's active warnings in one go, for example after a probation period. The cleared cases remain visible in `/history` as removed.",
+      "usage": ["/clearwarnings user:<member>"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to clear." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": [] },
+      "examples": [{ "command": "/clearwarnings user:@Aria" }],
+      "notes": ["The reply confirms how many warnings were cleared."]
+    },
+    {
+      "name": "history",
+      "summary": "View a user's complete moderation history.",
+      "description": "Shows every moderation case recorded for a user in this server: warnings, timeouts, kicks, bans and more. Removed warnings are included and marked, making this the definitive record when reviewing a member.",
+      "usage": ["/history user:<user>"],
+      "options": [
+        { "name": "user", "type": "User", "required": true, "description": "The user to look up. They do not need to still be in the server." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": [] },
+      "private": true,
+      "examples": [{ "command": "/history user:@Aria" }],
+      "notes": ["Only you can see the reply.", "The 15 most recent cases are displayed, with the total count in the title."]
+    },
+    {
+      "name": "timeout",
+      "summary": "Temporarily mute a member using Discord's timeout.",
+      "description": "Places a member in timeout for a set time. They cannot send messages, react, speak in voice or join video until it ends. The member is notified by direct message and the case is logged with its duration.",
+      "usage": ["/timeout user:<member> duration:<time> [reason]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to time out." },
+        { "name": "duration", "type": "Duration", "required": true, "description": "How long the timeout lasts, such as `10m`, `2h`, `1d` or `1h30m`. Maximum 28 days." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the timeout (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": ["Moderate Members"] },
+      "logged": true,
+      "notifiesUser": true,
+      "examples": [
+        { "command": "/timeout user:@Aria duration:30m reason:Cool off", "note": "A 30 minute timeout." },
+        { "command": "/timeout user:@Aria duration:1d12h reason:Repeated rule breaks", "note": "Units can be combined." }
+      ],
+      "notes": [
+        "Accepted units: `s` seconds, `m` minutes, `h` hours, `d` days and `w` weeks.",
+        "Discord does not allow timing out server administrators or the server owner."
+      ]
+    },
+    {
+      "name": "untimeout",
+      "summary": "End a member's timeout early.",
+      "description": "Removes an active timeout so the member can talk again straight away. The action is logged as a case.",
+      "usage": ["/untimeout user:<member> [reason]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to release." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for lifting the timeout (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Moderate Members"], "bot": ["Moderate Members"] },
+      "logged": true,
+      "examples": [{ "command": "/untimeout user:@Aria reason:Apologised" }],
+      "notes": ["Fails with a friendly message if the member is not currently timed out."]
+    },
+    {
+      "name": "kick",
+      "summary": "Remove a member from the server (they can rejoin).",
+      "description": "Removes a member from the server. They can return with a fresh invite. The member is notified by direct message before the kick and the case is logged.",
+      "usage": ["/kick user:<member> [reason]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to kick. They must be in the server." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the kick (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Kick Members"], "bot": ["Kick Members"] },
+      "logged": true,
+      "notifiesUser": true,
+      "examples": [{ "command": "/kick user:@Aria reason:Inappropriate username" }]
+    },
+    {
+      "name": "ban",
+      "summary": "Permanently ban a user, optionally deleting their recent messages.",
+      "description": "Bans a user from the server. The user is notified by direct message, the ban is applied and the case is logged. You can also wipe up to seven days of their message history in the same step.",
+      "usage": ["/ban user:<user> [reason] [delete_days]"],
+      "options": [
+        { "name": "user", "type": "User", "required": true, "description": "The user to ban. They do not need to be in the server." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the ban (up to 512 characters)." },
+        { "name": "delete_days", "type": "Number", "required": false, "description": "Days of the user's messages to delete, from 0 to 7. Defaults to 0." }
+      ],
+      "permissions": { "user": ["Ban Members"], "bot": ["Ban Members"] },
+      "logged": true,
+      "notifiesUser": true,
+      "examples": [{ "command": "/ban user:@Spammer reason:Advertising delete_days:1", "note": "Bans the user and removes the last day of their messages." }],
+      "notes": ["Hierarchy checks apply to members who are still in the server."]
+    },
+    {
+      "name": "softban",
+      "summary": "Ban and instantly unban to clear a user's recent messages.",
+      "description": "Bans a member and immediately unbans them, which deletes the last seven days of their messages while allowing them to rejoin. It is ideal for cleaning up after compromised accounts or message spam without a permanent ban.",
+      "usage": ["/softban user:<member> [reason]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to softban. They must be in the server." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Ban Members"], "bot": ["Ban Members"] },
+      "logged": true,
+      "notifiesUser": true,
+      "examples": [{ "command": "/softban user:@Aria reason:Compromised account spamming links" }],
+      "notes": ["The direct message tells the member they are free to rejoin."]
+    },
+    {
+      "name": "unban",
+      "summary": "Lift a ban using the user's ID.",
+      "description": "Removes a ban so the user can rejoin with a new invite. Because banned users are no longer in your member list, you identify them by their Discord user ID.",
+      "usage": ["/unban user_id:<id> [reason]"],
+      "options": [
+        { "name": "user_id", "type": "Text", "required": true, "description": "The numeric Discord ID of the banned user." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the unban (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Ban Members"], "bot": ["Ban Members"] },
+      "logged": true,
+      "examples": [{ "command": "/unban user_id:123456789012345678 reason:Appeal accepted" }],
+      "notes": ["To copy a user ID, enable Developer Mode in Discord's advanced settings, then right-click the user."]
+    },
+    {
+      "name": "purge",
+      "summary": "Bulk delete recent messages in the current channel.",
+      "description": "Deletes up to 100 recent messages in the channel where you run it, optionally only those sent by one user. The action is logged as a case so there is a record of who cleaned the channel.",
+      "usage": ["/purge amount:<1-100> [user]"],
+      "options": [
+        { "name": "amount", "type": "Number", "required": true, "description": "How many messages to delete, from 1 to 100." },
+        { "name": "user", "type": "User", "required": false, "description": "Only delete messages sent by this user." }
+      ],
+      "permissions": { "user": ["Manage Messages"], "bot": ["Manage Messages", "Read Message History"] },
+      "logged": true,
+      "examples": [
+        { "command": "/purge amount:50", "note": "Removes the 50 most recent messages." },
+        { "command": "/purge amount:20 user:@Spammer", "note": "Removes up to 20 of that user's messages from the latest 100 in the channel." }
+      ],
+      "notes": [
+        "Discord only allows bulk deletion of messages newer than 14 days; older messages are skipped.",
+        "When filtering by user, Damselette looks through the 100 most recent messages in the channel.",
+        "The confirmation is only visible to you."
+      ]
+    },
+    {
+      "name": "slowmode",
+      "summary": "Set or remove a channel's slowmode delay.",
+      "description": "Sets how long members must wait between messages in a text channel. Use it to calm busy channels during raids or heated discussions, and set it to `0` to switch it off.",
+      "usage": ["/slowmode seconds:<0-21600> [channel]"],
+      "options": [
+        { "name": "seconds", "type": "Number", "required": true, "description": "Delay between messages in seconds, from 0 (off) to 21600 (6 hours)." },
+        { "name": "channel", "type": "Channel", "required": false, "description": "A text channel. Defaults to the channel you run the command in." }
+      ],
+      "permissions": { "user": ["Manage Channels"], "bot": ["Manage Channels"] },
+      "examples": [
+        { "command": "/slowmode seconds:10", "note": "Ten seconds between messages in this channel." },
+        { "command": "/slowmode seconds:0 channel:#general", "note": "Turns slowmode off in #general." }
+      ]
+    },
+    {
+      "name": "lock",
+      "summary": "Stop everyone from sending messages in a channel.",
+      "description": "Prevents the `@everyone` role from sending messages in a text channel, which is useful for emergencies and announcements. Roles that have been explicitly granted permission to speak, such as moderators, are not affected. The lock is logged as a case.",
+      "usage": ["/lock [channel] [reason]"],
+      "options": [
+        { "name": "channel", "type": "Channel", "required": false, "description": "A text channel. Defaults to the current channel." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason recorded in the case log (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Manage Channels"], "bot": ["Manage Channels"] },
+      "logged": true,
+      "examples": [{ "command": "/lock channel:#general reason:Raid in progress" }],
+      "notes": ["Reverse it with `/unlock`."]
+    },
+    {
+      "name": "unlock",
+      "summary": "Let everyone send messages in a channel again.",
+      "description": "Removes the lock placed by `/lock` by resetting the `@everyone` send-messages permission, so the channel goes back to following its category and server defaults. The action is logged as a case.",
+      "usage": ["/unlock [channel]"],
+      "options": [
+        { "name": "channel", "type": "Channel", "required": false, "description": "A text channel. Defaults to the current channel." }
+      ],
+      "permissions": { "user": ["Manage Channels"], "bot": ["Manage Channels"] },
+      "logged": true,
+      "examples": [{ "command": "/unlock channel:#general" }]
+    },
+    {
+      "name": "nickname",
+      "summary": "Change or reset a member's nickname.",
+      "description": "Sets a new server nickname for a member, or resets it back to their username when you leave the nickname empty. You can always change your own nickname with it, provided Damselette can manage it.",
+      "usage": ["/nickname user:<member> [nickname]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to rename." },
+        { "name": "nickname", "type": "Text", "required": false, "description": "The new nickname, up to 32 characters. Leave empty to reset." }
+      ],
+      "permissions": { "user": ["Manage Nicknames"], "bot": ["Manage Nicknames"] },
+      "examples": [
+        { "command": "/nickname user:@Aria nickname:Moonlit Aria", "note": "Sets a new nickname." },
+        { "command": "/nickname user:@Aria", "note": "Resets the nickname." }
+      ],
+      "notes": ["Hierarchy rules apply when you change someone else's nickname."]
+    },
+    {
+      "name": "role",
+      "summary": "Add or remove a role from a member.",
+      "description": "Assigns or removes a role without opening Discord's member panel. Damselette checks that both you and the bot sit above the role, so it can never be used to hand out roles higher than your own.",
+      "usage": ["/role add user:<member> role:<role>", "/role remove user:<member> role:<role>"],
+      "permissions": { "user": ["Manage Roles"], "bot": ["Manage Roles"] },
+      "subcommands": [
+        {
+          "name": "add",
+          "summary": "Give a role to a member.",
+          "usage": ["/role add user:<member> role:<role>"],
+          "options": [
+            { "name": "user", "type": "Member", "required": true, "description": "The member who will receive the role." },
+            { "name": "role", "type": "Role", "required": true, "description": "The role to give." }
+          ],
+          "examples": [{ "command": "/role add user:@Aria role:@Member" }]
+        },
+        {
+          "name": "remove",
+          "summary": "Take a role away from a member.",
+          "usage": ["/role remove user:<member> role:<role>"],
+          "options": [
+            { "name": "user", "type": "Member", "required": true, "description": "The member who will lose the role." },
+            { "name": "role", "type": "Role", "required": true, "description": "The role to remove." }
+          ],
+          "examples": [{ "command": "/role remove user:@Aria role:@Member" }]
+        }
+      ],
+      "notes": [
+        "The role must be below your highest role (the server owner is exempt) and below Damselette's highest role.",
+        "Integration-managed roles and `@everyone` cannot be assigned manually."
+      ]
+    },
+    {
+      "name": "voicekick",
+      "summary": "Disconnect a member from their voice channel.",
+      "description": "Removes a member from the voice channel they are currently in without removing them from the server. The action is logged as a case.",
+      "usage": ["/voicekick user:<member> [reason]"],
+      "options": [
+        { "name": "user", "type": "Member", "required": true, "description": "The member to disconnect." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the disconnect (up to 512 characters)." }
+      ],
+      "permissions": { "user": ["Move Members"], "bot": ["Move Members"] },
+      "logged": true,
+      "examples": [{ "command": "/voicekick user:@Aria reason:Disrupting the stage" }],
+      "notes": ["The member must currently be connected to a voice channel."]
+    }
+  ]
+}

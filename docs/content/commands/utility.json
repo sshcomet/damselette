@@ -1,0 +1,58 @@
+{
+  "id": "utility",
+  "title": "Utility",
+  "icon": "sparkles",
+  "description": "Handy everyday commands for finding information and checking that Damselette is awake. Anyone can use them.",
+  "commands": [
+    {
+      "name": "help",
+      "summary": "Open this documentation website.",
+      "description": "Sends a link to the documentation, where every command, permission and feature is explained in detail. It also works in direct messages with Damselette.",
+      "usage": ["/help"],
+      "permissions": { "user": [], "bot": [] },
+      "dm": true,
+      "examples": [{ "command": "/help" }]
+    },
+    {
+      "name": "ping",
+      "summary": "Check how quickly Damselette is responding.",
+      "description": "Shows Damselette's current WebSocket latency to Discord in milliseconds. If it ever feels slow, this is the first thing to check. It also works in direct messages.",
+      "usage": ["/ping"],
+      "permissions": { "user": [], "bot": [] },
+      "dm": true,
+      "examples": [{ "command": "/ping" }]
+    },
+    {
+      "name": "avatar",
+      "summary": "Show a user's avatar in full size.",
+      "description": "Displays a user's profile picture at high resolution. Leave the user out to see your own. It also works in direct messages.",
+      "usage": ["/avatar [user]"],
+      "options": [
+        { "name": "user", "type": "User", "required": false, "description": "The user whose avatar you want. Defaults to you." }
+      ],
+      "permissions": { "user": [], "bot": [] },
+      "dm": true,
+      "examples": [{ "command": "/avatar user:@Aria" }]
+    },
+    {
+      "name": "userinfo",
+      "summary": "Show details about a user.",
+      "description": "Displays a user's ID, when their account was created and, if they are in the server, when they joined and which roles they have.",
+      "usage": ["/userinfo [user]"],
+      "options": [
+        { "name": "user", "type": "User", "required": false, "description": "The user to look up. Defaults to you." }
+      ],
+      "permissions": { "user": [], "bot": [] },
+      "examples": [{ "command": "/userinfo user:@Aria" }],
+      "notes": ["The role list shows up to 15 roles, highest first."]
+    },
+    {
+      "name": "serverinfo",
+      "summary": "Show an overview of the current server.",
+      "description": "Displays the server's icon and name, owner, member count, creation date, number of channels and roles, and boost count.",
+      "usage": ["/serverinfo"],
+      "permissions": { "user": [], "bot": [] },
+      "examples": [{ "command": "/serverinfo" }]
+    }
+  ]
+}
