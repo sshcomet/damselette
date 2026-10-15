@@ -39,7 +39,7 @@ If you want a support desk, create a category for tickets, a support role and (o
 /ticket setup panel_channel:#support category:Tickets support_role:@Support log_channel:#ticket-logs
 ```
 
-Damselette posts an **Open Ticket** panel in `#support`. See the [Tickets guide](#/docs/tickets) for the full flow.
+Damselette posts an **Open Ticket** panel in `#support`. `support_role` is your first staff role; add moderators, helpers or anyone else with [`/ticket staff add role:@Moderators`](#/commands/tickets). See the [Tickets guide](#/docs/tickets) for the full flow.
 
 ## 5. Check anti-nuke
 
