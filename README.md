@@ -6,7 +6,7 @@
 
 **A moonlit guardian for your Discord server.**
 
-[Documentation](https://sshcomet.github.io/damselette/) · [Commands](https://sshcomet.github.io/damselette/#/commands) · [Getting started](https://sshcomet.github.io/damselette/#/docs/getting-started)
+[Documentation](https://sshcomet.github.io/damselette/) · [Commands](https://sshcomet.github.io/damselette/#/commands) · [Getting started](https://sshcomet.github.io/damselette/#/docs/getting-started) · [Invite Damselette](https://discord.com/oauth2/authorize?client_id=1552210996125368382)
 
 </div>
 
@@ -27,6 +27,7 @@ She was built to be a dependable companion for server teams who want one tidy bo
 | 🛡️ **Moderation** | Looking after members and keeping a clear record. |
 | 🎫 **Tickets** | A quiet desk where members can reach staff. |
 | 🌙 **Anti-nuke** | A guard that stands between your server and the worst nights. |
+| 🌊 **Raid guard** | Catches floods of new accounts and quiets the server on your say-so. |
 | ✨ **Utility** | Small everyday helpers. |
 
 ## Documentation

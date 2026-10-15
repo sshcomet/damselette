@@ -18,7 +18,10 @@ Every command has two permission requirements: what **you** need to use it, and 
 | Moderation | Ban Members, Kick Members, Moderate Members, Manage Messages, Manage Channels, Manage Nicknames, Manage Roles, Move Members |
 | Tickets | View Channels, Send Messages, Embed Links, Attach Files, Read Message History, Manage Channels |
 | Anti-nuke | View Audit Log, Ban Members, Kick Members, Manage Roles, Manage Channels, Manage Webhooks, Manage Server, Manage Expressions |
+| Raid guard | Manage Channels, plus the **Server Members Intent** enabled by the person who runs Damselette |
 | Everything | View Channels, Send Messages, Embed Links, Read Message History |
+
+The **Server Members Intent** is a switch in the Discord Developer Portal, not a server permission. Without it Damselette cannot see members joining, so join-flood detection stays silent. Everything else in the table is a normal channel or server permission.
 
 ## Role position
 

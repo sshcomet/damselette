@@ -8,10 +8,19 @@ group: Systems
 
 Anti-nuke protects your server from **mass destruction**: someone deleting every channel, banning your members, spamming roles or handing out admin. It reacts in seconds, **undoes the damage** and then lets your administrators decide what happens to the offender.
 
+Alongside it, the **raid guard** watches for floods of brand new accounts arriving and offers your administrators a one-click way to quiet the whole server down.
+
 > [!NOTE]
 > Damselette **never bans, kicks or strips anyone on its own**. Anti-nuke rolls back and asks. A human always makes the final call.
 
 Anti-nuke is **on by default** on every server. Commands are listed under [Server Admin](#/commands/antinuke).
+
+Two layers work together:
+
+| Layer | Watches for | Responds by |
+|---|---|---|
+| **Anti-nuke** | Mass destruction in the audit log | Rolling the damage back, then asking an admin |
+| **[Raid guard](#raid-guards)** | Floods of new accounts joining | Asking an admin, then locking the server down |
 
 ## How it works
 
@@ -81,6 +90,41 @@ Strict defaults are great for strangers but frustrating for your own team, so yo
 
 The **server owner** is always trusted.
 
+## Raid guard
+
+A raid never touches the audit log. Nobody deletes a channel — a hundred fresh accounts simply arrive and start talking, which is why anti-nuke alone would never notice. The raid guard watches **joins** instead.
+
+When `joins` brand new accounts arrive inside `windowSec`, Damselette posts a **Lock the server down / Dismiss** alert in the anti-nuke log channel and sends the server owner a direct message. It does not touch anybody until an Administrator presses a button.
+
+| Choice | What happens |
+|---|---|
+| **Lock the server down** | `@everyone` loses **Send Messages**, **Send Messages in Threads**, **Add Reactions** and **Embed Links** in every text channel for the configured time. Nobody is banned, kicked or timed out. |
+| **Dismiss** | Nothing at all. Members can carry on talking. |
+
+Everything the lockdown changed is remembered, so when the timer ends — or when you run [`/antinuke raid lock duration:off`](#/commands/antinuke) — every channel is put back **exactly** how it was, including permissions it never touched. An approved lockdown is written to the mod log as a `LOCKDOWN` case.
+
+### Your staff are never caught in it
+
+- Members of a staff role, and anyone holding **Administrator**, are never counted as raid traffic when they join.
+- A lockdown explicitly **allows** your staff roles to speak: the ones you set with `/antinuke staffrole add`, plus any role that can manage, ban, kick, moderate or delete messages. Moderators keep working while everyone else goes quiet.
+- Voice channels, categories and threads are left alone entirely.
+- Only Administrators can start or end a lockdown, and only the **server owner** can change the settings.
+
+### Tuning it
+
+| Setting | Default | Command |
+|---|---|---|
+| Detection | 10 accounts younger than 7 days, within 10 seconds | [`/antinuke raid threshold`](#/commands/antinuke) |
+| Lockdown length | 30 minutes | [`/antinuke raid lockdown`](#/commands/antinuke) |
+| Detection on or off | On | [`/antinuke raid mode`](#/commands/antinuke) |
+| Lock or unlock by hand | — | [`/antinuke raid lock`](#/commands/antinuke) |
+| What it is doing right now | — | [`/antinuke raid status`](#/commands/antinuke) |
+
+Raise the threshold for a busy community, or lower it and the account age if you are a small server that cannot tell a raid from a normal busy evening.
+
+> [!NOTE]
+> Join detection needs the **Server Members Intent**, which is enabled by the person who runs Damselette in the Discord Developer Portal. See [Permissions](#/docs/permissions).
+
 ## Who can change settings
 
 Only the **server owner** can change anti-nuke settings. Administrators can view `/antinuke status` and the lists. This stops a hijacked admin account from disabling protection or whitelisting itself.
@@ -92,5 +136,7 @@ Run `/antinuke status` after setup. It verifies the permissions below and warns 
 - **View Audit Log** is required. Without it nothing can be detected.
 - **Ban Members**, **Kick Members**, **Manage Roles**, **Manage Channels**, **Manage Webhooks**, **Manage Server** and **Manage Expressions** (or simply Administrator).
 - Damselette's role should be at the **very top** of your role list, so it can restore and punish.
+
+For the [raid guard](#raid-guards) you additionally need **Manage Channels** (or Administrator) to lock a server down, and the **Server Members Intent** turned on in the Developer Portal so Damselette can see members joining.
 
 Finally, set a log channel with [`/antinuke logchannel`](#/commands/antinuke) so approval requests land where your admins will see them.

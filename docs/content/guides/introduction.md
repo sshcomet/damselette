@@ -14,7 +14,7 @@ These docs explain everything the bot does and every command you can use. If you
 
 | Area | What it does | Learn more |
 |---|---|---|
-| **Moderation** | Warnings, timeouts, kicks, bans, channel control and a numbered case log. | [Guide](#/docs/moderation) · [Commands](#/commands/moderation) |
+| **Moderation** | Warnings, mutes, kicks, bans, channel control and a numbered case log. | [Guide](#/docs/moderation) · [Commands](#/commands/moderation) |
 | **Tickets** | A button-driven support desk with private channels and transcripts. | [Guide](#/docs/tickets) · [Commands](#/commands/tickets) |
 | **Anti-nuke** | Rolls back mass-destruction and asks your admins before punishing. | [Guide](#/docs/antinuke) · [Commands](#/commands/admin) |
 | **Utility** | Avatars, user and server info, latency. | [Commands](#/commands/utility) |
@@ -29,12 +29,12 @@ Damselette uses Discord's slash commands. Type `/` in any channel and pick a com
 - Commands with sub-commands, such as `/ticket close`, are written with a space between the parts.
 
 ```text
-/timeout user:<member> duration:<time> [reason]
+/mute user:<member> duration:<time> [reason]
 ```
 
 ## Durations
 
-Commands that take a time, like `/timeout` and `/antinuke relax`, accept a number followed by a unit. You can chain several together.
+Commands that take a time, like `/mute` and `/antinuke relax`, accept a number followed by a unit. You can chain several together.
 
 | Unit | Meaning | Example |
 |---|---|---|

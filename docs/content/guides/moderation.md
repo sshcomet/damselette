@@ -6,7 +6,7 @@ group: Systems
 
 # Moderation
 
-Damselette gives your team everything needed to handle problems calmly: warnings, timeouts, kicks, bans, channel controls and member management. Every command shares the same safety rules and the same record keeping, so the experience is consistent whichever tool you reach for.
+Damselette gives your team everything needed to handle problems calmly: warnings, mutes, kicks, bans, channel controls and member management. Every command shares the same safety rules and the same record keeping, so the experience is consistent whichever tool you reach for.
 
 See the [Moderation commands](#/commands/moderation) for syntax and options.
 
@@ -17,13 +17,14 @@ Most moderation actions create a **case**: a numbered record containing the type
 | Case type | Created by |
 |---|---|
 | `WARN` | `/warn` |
-| `TIMEOUT` / `UNTIMEOUT` | `/timeout`, `/untimeout` |
+| `MUTE` / `UNMUTE` | `/mute`, `/unmute` |
 | `KICK` | `/kick` |
 | `BAN` / `SOFTBAN` / `UNBAN` | `/ban`, `/softban`, `/unban` |
 | `VOICEKICK` | `/voicekick` |
 | `LOCK` / `UNLOCK` | `/lock`, `/unlock` |
 | `PURGE` | `/purge` |
 | `ANTINUKE` | A punishment approved by an administrator through [anti-nuke](#/docs/antinuke) |
+| `LOCKDOWN` | A server lockdown approved by an administrator during a [raid](#/docs/antinuke) |
 
 If you set a mod-log channel with [`/config modlog`](#/commands/config), each new case is also posted there as an embed. Without one, cases are still stored and can be reviewed with `/history`.
 
@@ -35,7 +36,7 @@ If you set a mod-log channel with [`/config modlog`](#/commands/config), each ne
 
 ## Notifying members
 
-When you warn, time out, kick, ban or softban someone, Damselette first sends them a direct message with the action and your reason. If the member has direct messages turned off, the action still goes ahead.
+When you warn, mute, kick, ban or softban someone, Damselette first sends them a direct message with the action and your reason. If the member has direct messages turned off, the action still goes ahead.
 
 > [!TIP]
 > Write reasons as if the member will read them, because they will. Clear reasons reduce appeals.
@@ -69,5 +70,5 @@ Role assignment with `/role` goes further and also checks the role being handed 
 | "Your highest role must be above the target's highest role." | Move your role above the member's, or ask someone with a higher role. |
 | "My highest role must be above the target's highest role." | Drag Damselette's role higher in **Server Settings → Roles**. |
 | "I was unable to ban that user." | Check that Damselette has **Ban Members**. |
-| "I cannot timeout that member." | Discord blocks timeouts on administrators and the owner. |
+| "I cannot mute that member." | Discord blocks timeouts on administrators and the owner. |
 | Commands don't appear for you | You lack the permission the command needs. See [Permissions](#/docs/permissions). |

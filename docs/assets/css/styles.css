@@ -138,19 +138,22 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-bottom: 1px solid var(--border);
 }
 .header__inner { height: 100%; max-width: 1480px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; gap: 14px; }
-.brand { display: flex; align-items: center; gap: 10px; color: var(--text); }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--text); min-width: 0; flex: 0 1 auto; }
 .brand:hover { color: var(--text); }
-.brand img { border-radius: 50%; box-shadow: 0 0 0 1px var(--border-strong), 0 0 18px var(--accent-soft); }
-.brand__name { font-size: 1.45rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; }
-.brand__tag { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 99px; }
+.brand img { border-radius: 50%; box-shadow: 0 0 0 1px var(--border-strong), 0 0 18px var(--accent-soft); flex: none; }
+.brand__name { font-size: 1.45rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand__tag { font-family: var(--font-mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 2px 8px; border-radius: 99px; flex: none; }
 .header__nav { display: flex; gap: 4px; margin-left: 18px; }
 .header__nav a { color: var(--muted); font-size: .92rem; font-weight: 500; padding: 8px 12px; border-radius: 10px; }
 .header__nav a:hover { color: var(--text); background: var(--accent-soft); }
-.header__actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-.icon-btn { width: 40px; height: 40px; display: inline-grid; place-items: center; background: transparent; border: 1px solid transparent; border-radius: 12px; color: var(--muted); transition: all .2s; }
+.header__actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex: none; }
+.icon-btn { width: 40px; height: 40px; display: inline-grid; place-items: center; background: transparent; border: 1px solid transparent; border-radius: 12px; color: var(--muted); transition: all .2s; flex: none; }
 .icon-btn:hover { color: var(--text); background: var(--accent-soft); border-color: var(--border); }
-.menu-btn { display: none; margin-left: -8px; }
-.search-btn { display: inline-flex; align-items: center; gap: 10px; min-width: 232px; height: 40px; padding: 0 10px 0 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--muted); transition: border-color .2s, color .2s; }
+.menu-btn { display: none; margin-left: -8px; flex: none; }
+.invite-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 12px; background: var(--accent); color: var(--accent-ink); font-weight: 600; font-size: .9rem; white-space: nowrap; flex: none; transition: background .2s, transform .2s; }
+.invite-btn:hover { color: var(--accent-ink); background: var(--accent-strong); transform: translateY(-1px); }
+.invite-btn svg { flex: none; }
+.search-btn { display: inline-flex; align-items: center; gap: 10px; min-width: 232px; height: 40px; padding: 0 10px 0 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--muted); transition: border-color .2s, color .2s; flex: none; }
 .search-btn:hover { border-color: var(--border-strong); color: var(--text); }
 .search-btn__text { flex: 1; text-align: left; font-size: .9rem; }
 kbd { font: 500 .72rem var(--font-mono); padding: 2px 7px; border: 1px solid var(--border-strong); border-bottom-width: 2px; border-radius: 6px; color: var(--muted); background: var(--surface); }
@@ -427,6 +430,12 @@ mark { background: color-mix(in srgb, var(--accent) 38%, transparent); color: in
   .layout { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
   .toc { display: none; }
 }
+@media (max-width: 1099px) {
+  /* Not enough room for the wide search field and the full wordmark: shrink the field
+     to its icon first, so the brand name is never squeezed or clipped. */
+  .search-btn { min-width: 0; width: 40px; padding: 0; justify-content: center; }
+  .search-btn__text, .search-btn__kbd { display: none; }
+}
 @media (max-width: 999px) {
   .layout { grid-template-columns: minmax(0, 1fr); padding: 0 16px; }
   .menu-btn { display: inline-grid; }
@@ -440,8 +449,10 @@ mark { background: color-mix(in srgb, var(--accent) 38%, transparent); color: in
   body.drawer-open .backdrop { opacity: 1; pointer-events: auto; }
   .header { z-index: 70; }
   .main { padding-top: 24px; }
-  .search-btn { min-width: 0; width: 40px; padding: 0; justify-content: center; }
-  .search-btn__text, .search-btn__kbd { display: none; }
+  /* The search and invite buttons collapse to plain icons here, which frees the room
+     the brand needs instead of letting it slide under them. */
+  .invite-btn { width: 40px; padding: 0; }
+  .invite-btn__text { display: none; }
   .grid--3 { grid-template-columns: 1fr; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .stats li:nth-child(2) { border-right: 0; }
@@ -450,8 +461,9 @@ mark { background: color-mix(in srgb, var(--accent) 38%, transparent); color: in
 @media (max-width: 640px) {
   :root { --header-h: 58px; }
   .header__inner { padding: 0 12px; gap: 8px; }
+  .brand { gap: 8px; }
   .brand__tag { display: none; }
-  .brand__name { font-size: 1.25rem; }
+  .brand__name { font-size: 1.25rem; letter-spacing: .02em; }
   .hero__body { flex-direction: column; align-items: flex-start; gap: 6px; padding: 0 4px; }
   .hero__avatar { width: 96px; height: 96px; border-width: 4px; margin-top: -48px; }
   .hero__text { padding-top: 10px; }
@@ -482,6 +494,18 @@ mark { background: color-mix(in srgb, var(--accent) 38%, transparent); color: in
   .options tbody tr:hover td { background: transparent; }
   .options td::before { content: attr(data-label); display: block; font: 500 .64rem var(--font-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
   .options td:first-child { white-space: normal; }
+}
+@media (max-width: 480px) {
+  /* Tightest phones: drop the GitHub icon (it is in the footer too) and tighten the gaps. */
+  .header__actions { gap: 6px; }
+  #gh-link { display: none; }
+}
+@media (max-width: 400px) {
+  .header__inner { padding: 0 10px; }
+  .brand__name { font-size: 1.05rem; letter-spacing: 0; }
+}
+@media (max-width: 340px) {
+  .brand img { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }

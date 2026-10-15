@@ -35,7 +35,7 @@
     {
       "name": "antinuke",
       "summary": "Protect the server from raids, nukes and rogue staff.",
-      "description": "Manages Damselette's anti-nuke protection. When someone who is not trusted breaks the limits, Damselette undoes the damage, can quarantine their power roles and asks your administrators to decide the punishment. Anyone with Administrator can view the status, but only the **server owner** can change settings, so a hijacked admin account can't switch protection off.",
+      "description": "Manages Damselette's anti-nuke protection and its raid guard. When someone who is not trusted breaks the limits, Damselette undoes the damage, can quarantine their power roles and asks your administrators to decide the punishment. When a flood of brand new accounts joins at once, it asks whether to lock the server down. Anyone with Administrator can view the status, but only the **server owner** can change settings, so a hijacked admin account can't switch protection off.",
       "usage": [
         "/antinuke status",
         "/antinuke enable",
@@ -46,10 +46,11 @@
         "/antinuke quarantine enabled:<true|false>",
         "/antinuke relax user:<member> duration:<time|off>",
         "/antinuke staffrole add|remove|list",
+        "/antinuke raid status|mode|threshold|lockdown|lock",
         "/antinuke whitelist add|remove|list"
       ],
       "permissions": { "user": ["Administrator"], "bot": ["View Audit Log", "Ban Members", "Kick Members", "Manage Roles", "Manage Channels", "Manage Webhooks", "Manage Server", "Manage Expressions"] },
-      "access": "Administrators can view `status` and the lists. Every other subcommand is for the **server owner** only.",
+      "access": "Administrators can view `status`, `raid status` and the lists. Every other subcommand is for the **server owner** only.",
       "subcommands": [
         {
           "name": "status",
@@ -151,6 +152,33 @@
           "examples": [
             { "command": "/antinuke staffrole add role:@Moderator" },
             { "command": "/antinuke staffrole list", "note": "Administrators can also run the list view." }
+          ]
+        },
+        {
+          "name": "raid",
+          "summary": "Manage join-flood detection and the lockdown it can raise.",
+          "description": "Anti-nuke watches what people destroy; the raid guard watches what arrives. When several brand new accounts join inside a few seconds, Damselette alerts your administrators without touching anybody. Approving that alert locks every text channel for `@everyone` while explicitly allowing your staff roles to speak, and everything is put back exactly as it was when the timer ends. Members of a staff role are never counted as raid traffic.",
+          "usage": ["/antinuke raid status", "/antinuke raid mode enabled:<true|false>", "/antinuke raid threshold joins:<number> [seconds] [age]", "/antinuke raid lockdown duration:<time>", "/antinuke raid lock duration:<time|off>"],
+          "permissions": { "user": ["Administrator"], "bot": ["Manage Channels"] },
+          "options": [
+            { "name": "enabled", "type": "True/False", "required": false, "description": "Turns join-flood detection on or off (for `mode`)." },
+            { "name": "joins", "type": "Number", "required": false, "description": "How many fresh accounts inside the window count as a raid, from 1 to 100 (for `threshold`)." },
+            { "name": "seconds", "type": "Number", "required": false, "description": "The window length, from 5 to 300 seconds. Keeps the current one if omitted." },
+            { "name": "age", "type": "Number", "required": false, "description": "Only count accounts younger than this many days, from 1 to 365. Established accounts are ordinary traffic and are never counted." },
+            { "name": "duration", "type": "Duration", "required": false, "description": "For `lockdown`, how long an approved lockdown lasts. For `lock`, how long to lock now, or `off` to lift one." }
+          ],
+          "examples": [
+            { "command": "/antinuke raid status", "note": "Shows the settings and whether a lockdown is running." },
+            { "command": "/antinuke raid threshold joins:20", "note": "Busier server: only a flood of twenty new accounts alerts." },
+            { "command": "/antinuke raid lockdown duration:1h" },
+            { "command": "/antinuke raid lock duration:off", "note": "Lift a lockdown early." }
+          ],
+          "notes": [
+            "Detection is on by default with 10 accounts younger than 7 days inside 10 seconds, and a 30 minute lockdown.",
+            "A lockdown denies Send Messages, Send Messages in Threads, Add Reactions and Embed Links to `@everyone` in text channels only. Voice channels, categories and threads are untouched.",
+            "Staff roles — the ones from `/antinuke staffrole add` plus any role that can manage, ban, kick, moderate or delete messages — are explicitly allowed through.",
+            "Nothing is done to any account: raid members stay in the server, they simply cannot post until the lockdown ends.",
+            "Needs **Manage Channels** and the Server Members Intent. See the [Anti-nuke guide](#/docs/antinuke)."
           ]
         },
         {

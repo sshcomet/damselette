@@ -8,7 +8,7 @@ let active = 0;
 
 const SUGGESTED = [
   ['/ban', '#/commands/ban', 'Command'],
-  ['/timeout', '#/commands/timeout', 'Command'],
+  ['/mute', '#/commands/mute', 'Command'],
   ['/ticket setup', '#/commands/ticket?s=cmd-ticket-setup', 'Command'],
   ['/antinuke', '#/commands/antinuke', 'Command'],
   ['Getting started', '#/docs/getting-started', 'Guide'],

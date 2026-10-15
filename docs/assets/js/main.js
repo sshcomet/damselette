@@ -176,6 +176,8 @@ function buildChrome() {
     </div>`;
   const gh = $('#gh-link');
   if (site.links.github) { gh.href = site.links.github; gh.hidden = false; } else gh.hidden = true;
+  const invite = $('#invite-link');
+  if (site.links.invite) { invite.href = site.links.invite; invite.hidden = false; } else invite.hidden = true;
 }
 
 function syncThemeButton() {

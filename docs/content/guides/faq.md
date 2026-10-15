@@ -22,6 +22,10 @@ No. Anti-nuke rolls back damage and, if you keep **quarantine** on, temporarily 
 
 Only the server owner. Administrators can view the status and lists. This protects you if an admin account is compromised.
 
+## A raid flooded my server. What now?
+
+Press **Lock the server down** in the alert Damselette posts. Everyone loses the ability to post in text channels while your staff roles keep talking normally, and the lockdown lifts itself when the timer runs out — or immediately with `/antinuke raid lock duration:off`. Nobody is banned by this; see the [Raid guard](#/docs/antinuke).
+
 ## A trusted moderator keeps tripping anti-nuke.
 
 Add their role with `/antinuke staffrole add` to double their limits, give them `/antinuke relax` for a temporary boost during a cleanup, or raise a limit with `/antinuke limit`. As a last resort, `/antinuke whitelist add` makes them fully trusted.

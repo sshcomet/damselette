@@ -2,7 +2,7 @@
   "id": "moderation",
   "title": "Moderation",
   "icon": "shield",
-  "description": "Keep your community safe with a complete toolkit for warnings, timeouts, bans, channel control and member management. Every action respects role hierarchy and is written to your mod log as a numbered case.",
+  "description": "Keep your community safe with a complete toolkit for warnings, mutes, bans, channel control and member management. Every action respects role hierarchy and is written to your mod log as a numbered case.",
   "guide": "moderation",
   "commands": [
     {
@@ -65,7 +65,7 @@
     {
       "name": "history",
       "summary": "View a user's complete moderation history.",
-      "description": "Shows every moderation case recorded for a user in this server: warnings, timeouts, kicks, bans and more. Removed warnings are included and marked, making this the definitive record when reviewing a member.",
+      "description": "Shows every moderation case recorded for a user in this server: warnings, mutes, kicks, bans and more. Removed warnings are included and marked, making this the definitive record when reviewing a member.",
       "usage": ["/history user:<user>"],
       "options": [
         { "name": "user", "type": "User", "required": true, "description": "The user to look up. They do not need to still be in the server." }
@@ -76,40 +76,40 @@
       "notes": ["Only you can see the reply.", "The 15 most recent cases are displayed, with the total count in the title."]
     },
     {
-      "name": "timeout",
+      "name": "mute",
       "summary": "Temporarily mute a member using Discord's timeout.",
-      "description": "Places a member in timeout for a set time. They cannot send messages, react, speak in voice or join video until it ends. The member is notified by direct message and the case is logged with its duration.",
-      "usage": ["/timeout user:<member> duration:<time> [reason]"],
+      "description": "Places a member in timeout for a set time, so they cannot send messages, react, speak in voice or join video until it ends. The member is notified by direct message and the case is logged with its duration.",
+      "usage": ["/mute user:<member> duration:<time> [reason]"],
       "options": [
-        { "name": "user", "type": "Member", "required": true, "description": "The member to time out." },
-        { "name": "duration", "type": "Duration", "required": true, "description": "How long the timeout lasts, such as `10m`, `2h`, `1d` or `1h30m`. Maximum 28 days." },
-        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the timeout (up to 512 characters)." }
+        { "name": "user", "type": "Member", "required": true, "description": "The member to mute." },
+        { "name": "duration", "type": "Duration", "required": true, "description": "How long the mute lasts, such as `10m`, `2h`, `1d` or `1h30m`. Maximum 28 days." },
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for the mute (up to 512 characters)." }
       ],
       "permissions": { "user": ["Moderate Members"], "bot": ["Moderate Members"] },
       "logged": true,
       "notifiesUser": true,
       "examples": [
-        { "command": "/timeout user:@Aria duration:30m reason:Cool off", "note": "A 30 minute timeout." },
-        { "command": "/timeout user:@Aria duration:1d12h reason:Repeated rule breaks", "note": "Units can be combined." }
+        { "command": "/mute user:@Aria duration:30m reason:Cool off", "note": "A 30 minute mute." },
+        { "command": "/mute user:@Aria duration:1d12h reason:Repeated rule breaks", "note": "Units can be combined." }
       ],
       "notes": [
         "Accepted units: `s` seconds, `m` minutes, `h` hours, `d` days and `w` weeks.",
-        "Discord does not allow timing out server administrators or the server owner."
+        "Discord does not allow muting server administrators or the server owner."
       ]
     },
     {
-      "name": "untimeout",
-      "summary": "End a member's timeout early.",
-      "description": "Removes an active timeout so the member can talk again straight away. The action is logged as a case.",
-      "usage": ["/untimeout user:<member> [reason]"],
+      "name": "unmute",
+      "summary": "Lift a member's mute early.",
+      "description": "Removes an active mute so the member can talk again straight away. The action is logged as a case.",
+      "usage": ["/unmute user:<member> [reason]"],
       "options": [
         { "name": "user", "type": "Member", "required": true, "description": "The member to release." },
-        { "name": "reason", "type": "Text", "required": false, "description": "Reason for lifting the timeout (up to 512 characters)." }
+        { "name": "reason", "type": "Text", "required": false, "description": "Reason for lifting the mute (up to 512 characters)." }
       ],
       "permissions": { "user": ["Moderate Members"], "bot": ["Moderate Members"] },
       "logged": true,
-      "examples": [{ "command": "/untimeout user:@Aria reason:Apologised" }],
-      "notes": ["Fails with a friendly message if the member is not currently timed out."]
+      "examples": [{ "command": "/unmute user:@Aria reason:Apologised" }],
+      "notes": ["Fails with a friendly message if the member is not currently muted."]
     },
     {
       "name": "kick",

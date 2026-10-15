@@ -10,7 +10,7 @@ Setting up Damselette takes a few minutes. You will need the **Manage Server** p
 
 ## 1. Invite Damselette
 
-Add Damselette to your server using the **Invite** button on the [home page](#/) when it is available, or the invite link you were given. Approve the permissions it asks for.
+Press the **Invite** button in the top bar or on the [home page](#/) to add Damselette to your server, then approve the permissions it asks for.
 
 > [!NOTE]
 > The simplest option is to grant **Administrator**. If you prefer to be selective, the [Permissions](#/docs/permissions) page lists exactly what each feature needs.
@@ -51,6 +51,8 @@ Anti-nuke is **on by default**. Tell it where to send alerts, then check that ev
 ```
 
 `/antinuke status` tells you if a permission is missing or if a powerful role sits above Damselette. The [Anti-nuke guide](#/docs/antinuke) explains how the protection behaves and how to tune it.
+
+The same page also covers the **raid guard**, which watches for floods of brand new accounts joining. It is on by default and alerts your administrators without touching anyone; approving that alert locks the server down for everyone except your staff. It needs **Manage Channels** and the Server Members Intent to be enabled by whoever runs Damselette.
 
 > [!WARNING]
 > Only the **server owner** can change anti-nuke settings. This is intentional, so a compromised administrator cannot turn protection off.
