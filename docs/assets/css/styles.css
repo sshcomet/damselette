@@ -163,9 +163,13 @@ kbd { font: 500 .72rem var(--font-mono); padding: 2px 7px; border: 1px solid var
 .sidebar, .toc { position: sticky; top: var(--header-h); max-height: calc(100vh - var(--header-h)); overflow-y: auto; padding: 28px 0 40px; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; }
 .main { min-width: 0; padding: 36px 0 72px; outline: none; transition: opacity .35s var(--ease); }
 body.is-loading .main { opacity: 0; }
-body.is-home .layout { grid-template-columns: minmax(0, 1fr); }
-body.is-home .sidebar, body.is-home .toc { display: none; }
-body.is-home .main { max-width: 1120px; margin: 0 auto; width: 100%; }
+/* On desktop the homepage drops the page-level nav. Below 1000px the sidebar *is* the
+   drawer menu behind the hamburger, so it must stay visible there or the drawer opens empty. */
+@media (min-width: 1000px) {
+  body.is-home .layout { grid-template-columns: minmax(0, 1fr); }
+  body.is-home .sidebar, body.is-home .toc { display: none; }
+  body.is-home .main { max-width: 1120px; margin: 0 auto; width: 100%; }
+}
 
 /* ---------- Sidebar ---------- */
 .nav__group { margin-bottom: 26px; }
